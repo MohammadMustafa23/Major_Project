@@ -1,24 +1,66 @@
-import { useNavigate } from 'react-router-dom';
-export default function Card({title,description,Photo,id}) {
-   const navigate = useNavigate();
-   const handleCardClick = (id) => {
-    // Dynamic routing based on the clicked card's ID
-    navigate(`/item/${id}`);
-  };
+import { useNavigate } from "react-router-dom";
+
+export default function Card({
+  title,
+  description,
+  Photo,
+  id,
+  price,
+  location
+}) {
+  const navigate = useNavigate();
+
   return (
     <div
-      onClick={() => handleCardClick(id)}
-      className="p-8 max-w-100  rounded-md cursor-pointer  flex flex-col items-center"
-      href="#"
+      onClick={() => navigate(`/item/${id}`)}
+      className="
+        bg-white
+        rounded-2xl
+        overflow-hidden
+        cursor-pointer
+        transition-all
+        duration-300
+        hover:scale-[1.02]
+        hover:shadow-xl
+        mb-10
+      "
     >
       <img
         src={Photo}
-        className="shadow rounded-md cursor-pointer h-60  overflow-hidden border"
+        alt={title}
+        className="
+          w-full
+          h-64
+          object-cover
+        "
       />
-      <div className="mt-8">
-        <h4 className="font-bold text-xl">{title}</h4>
-        <p className="mt-2 text-gray-600">{description}</p>
-        <div className="mt-5"></div>
+
+      <div className="p-4">
+        <div className="flex justify-between items-center">
+          <h2 className="font-semibold text-lg truncate">
+            {title}
+          </h2>
+
+          <span className="font-medium">
+            ⭐ 4.8
+          </span>
+        </div>
+
+        <p className="text-gray-500 mt-1">
+          {location}
+        </p>
+
+        <p className="text-gray-500 text-sm mt-2 line-clamp-2">
+          {description}
+        </p>
+
+        <p className="mt-4 text-lg">
+          <span className="font-bold">
+            ₹{price}
+          </span>
+          {" "}
+          night
+        </p>
       </div>
     </div>
   );

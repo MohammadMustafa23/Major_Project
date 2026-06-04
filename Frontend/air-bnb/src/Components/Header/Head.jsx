@@ -10,7 +10,7 @@ export default function Head() {
                     <div className='ml-10 flex  w-60 align-center justify-between'>
                         <a onClick={()=>{navigate('/')}} >Home</a>
                         <a href="">All Listing</a>
-                        <a href="">Add Home</a>
+                        <a onClick={()=>{navigate('/add-properties')}} >Add Home</a>
                     </div>
                </div>
         </div>

@@ -1,76 +1,99 @@
 const HouseModel = require("../models/House.models");
+const multer = require("multer");
+const UploadFile = require("../Services/storage.service");
+
+// For File Sytem
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Create House
 async function AddHouse(req, res) {
-    try {
-        const house = await HouseModel.create(req.body);
+  try {
+    const result = await UploadFile(req.file.buffer, req.file.originalname);
 
-        res.status(201).json({
-            success: true,
-            message: "Property added successfully",
-            data: house
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
+    const NewHouse = await HouseModel.create({
+      Title: req.body.Title,
+      description: req.body.description,
+      Image: result.url, // ImageKit URL
+      Price: req.body.Price,
+      location: req.body.location,
+      Country: req.body.Country,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Property added successfully",
+      // data: house
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 }
 
-// Get All Houses
 async function ShowAllHouse(req, res) {
-    try {
-        const houses = await HouseModel.find();
+  try {
+    const houses = await HouseModel.find();
 
-        res.status(200).json({
-            success: true,
-            count: houses.length,
-            data: houses
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+    if (houses.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No properties found",
+      });
     }
+
+    return res.status(200).json({
+      success: true,
+      count: houses.length,
+      data: houses,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 }
 
 // Update House
 async function UpdateHouse(req, res) {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const updatedHouse = await HouseModel.findByIdAndUpdate(
-            id,
-            req.body,
-            {
-                new: true,
-                runValidators: true
-            }
-        );
-
-        if (!updatedHouse) {
-            return res.status(404).json({
-                success: false,
-                message: "Property not found"
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "Property updated successfully",
-            data: updatedHouse
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+    console.log(req.body);
+    
+    const updatedHouse = await HouseModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+        returnDocument: "after",
+        runValidators: true
     }
+);
+
+    console.log(updatedHouse);
+
+    if (!updatedHouse) {
+      return res.status(404).json({
+        success: false,
+        message: "Property not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Property updated successfully",
+      data: updatedHouse,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 }
 
-// Delete House
 async function DeleteHouse(req, res) {
     try {
         const { id } = req.params;
@@ -86,9 +109,9 @@ async function DeleteHouse(req, res) {
 
         res.status(200).json({
             success: true,
-            message: "Property deleted successfully",
-            data: deletedHouse
+            message: "Property deleted successfully"
         });
+
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -98,8 +121,8 @@ async function DeleteHouse(req, res) {
 }
 
 module.exports = {
-    AddHouse,
-    ShowAllHouse,
-    UpdateHouse,
-    DeleteHouse
+  AddHouse,
+  ShowAllHouse,
+  UpdateHouse,
+  DeleteHouse,
 };
