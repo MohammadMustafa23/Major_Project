@@ -21,4 +21,11 @@
 - Developed Add, Update, Delete & Fetch APIs  
 - Added House Listing Logic 
 
+# Day 5 Progress
+- Connected frontend with backend APIs.
+- Integrated data fetching and submission functionality.
+- Implemented API calls for house listings and related operations.
+- Added form validations to improve data integrity.
+- Fixed bugs discovered during frontend-backend integration.
+
 
