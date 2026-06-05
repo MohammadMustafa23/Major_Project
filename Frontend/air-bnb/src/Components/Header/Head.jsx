@@ -9,7 +9,7 @@ export default function Head() {
                     <img src={Logo} className='h-15' w-15 ml-10/>
                     <div className='ml-10 flex  w-60 align-center justify-between'>
                         <a onClick={()=>{navigate('/')}} >Home</a>
-                        <a href="">All Listing</a>
+                        <a onClick={()=>{navigate('/all-listings')} }>All Listing</a>
                         <a onClick={()=>{navigate('/add-properties')}} >Add Home</a>
                     </div>
                </div>
