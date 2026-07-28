@@ -1,4 +1,4 @@
-# Major_Project
+# Project On Course
 
 ## Day 1 Progress
 - Started building an Airbnb-inspired full-stack web application.
